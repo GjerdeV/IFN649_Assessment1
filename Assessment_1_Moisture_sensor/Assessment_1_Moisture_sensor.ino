@@ -1,26 +1,12 @@
-/* Analog Input Example, Teensyduino Tutorial #4
-   http://www.pjrc.com/teensy/tutorial4.html
-
-   After uploading this to your board, use Serial Monitor
-   to view the message.  When Serial is selected from the
-   Tools > USB Type menu, the correct serial port must be
-   selected from the Tools > Serial Port AFTER Teensy is
-   running this code.  Teensy only becomes a serial device
-   while this code is running!  For non-Serial types,
-   the Serial port is emulated, so no port needs to be
-   selected.
-
-   This example code is in the public domain.
-*/
-
-const int ledPin =11;
 const int soilPin = 21;
+int ledPin = 11;
 
 void setup()
 {                
-  Serial.begin(38400);
+  //Serial.begin(38400);
+  Serial.begin(9600);
   Serial1.begin(9600); 
-  pinMode(LEDPIN, OUTPUT);
+  pinMode(ledPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
 }
 
@@ -28,11 +14,22 @@ int val;
 
 void loop()                     
 {
-  val = analogRead(soilPin);
-  Serial.print("analog 0 is: ");
-  Serial.println(val);
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
-  digitalWrite(ledPin, LOW);
-  delay(100);
+    String str = Serial1.readString().substring(0); 
+    Serial.println(str);
+
+    // Sending commands to turn on or off the LED
+    if(str == "LED_ON"){
+      digitalWrite(ledPin, HIGH);
+      Serial.println("LED ON");
+    }
+    else if(str == "LED_OFF"){
+      digitalWrite(ledPin, LOW);
+      Serial.println("LED OFF");
+    }
+    val = analogRead(soilPin);
+    Serial.print("analog 0 is: ");
+    Serial.println(val);
+    Serial1.print("analog 0 is: ");
+    Serial1.println(val);
+    delay(2000);
 }
