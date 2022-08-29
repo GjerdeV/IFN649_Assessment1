@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 import serial
 import time
 import string
@@ -23,6 +24,8 @@ def on_message(client, userdata, msg):
 		ser.write(str.encode("LED_ON"))
 		rawserial = ser.readline()
 		cookedserial = rawserial.decode('utf-8').strip('\r\n')
+		# For publishing the data from embedded sensing tier to cloud:
+		#publish.single("test", cookedserial, hostname="ip-addres")
 		print(cookedserial)
 	else:
 		ser.write(str.encode("LED_OFF"))
